@@ -17,6 +17,12 @@ Text Domain: rebecca-mercier-theme
 /* Design Tokens
 ---------------------------------------- */
 
+/* FIX: Remove top margin from header */
+.site-header,
+header.wp-block-template-part {
+	margin-block-start: 0 !important;
+}
+
 :root {
 	/* Typography Scale */
 	--font-h1: clamp(2.6rem, 3.4vw, 3.4rem);

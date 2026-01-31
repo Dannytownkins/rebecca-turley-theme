@@ -1859,7 +1859,7 @@ body > .wp-site-blocks > .site-header:first-child {
 	}
 }
 
-/* MOBILE FIX: Remove floating-image container styling on mobile for mercier-therapy section */
+/* MOBILE FIX: Subtle shadow on image only, no container box */
 @media (max-width: 782px) {
 	#mercier-therapy .floating-image {
 		box-shadow: none !important;
@@ -1870,5 +1870,6 @@ body > .wp-site-blocks > .site-header:first-child {
 	
 	#mercier-therapy .floating-image img {
 		border-radius: var(--radius-small) !important;
+		box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.15) !important;
 	}
 }

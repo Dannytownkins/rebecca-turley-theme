@@ -23,6 +23,18 @@ header.wp-block-template-part {
 	margin-block-start: 0 !important;
 }
 
+/* FIX: Remove gap between header and hero - no cream bleed */
+main.wp-block-group,
+.wp-site-blocks > main {
+	margin-block-start: 0 !important;
+}
+
+.hero-parallax,
+.wp-block-cover.hero-parallax {
+	margin-block-start: 0 !important;
+	margin-top: 0 !important;
+}
+
 :root {
 	/* Typography Scale */
 	--font-h1: clamp(2.6rem, 3.4vw, 3.4rem);

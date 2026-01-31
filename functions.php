@@ -2,7 +2,7 @@
 /**
  * Core functions for the Rebecca Mercier block theme.
  *
- * @package rebecca-mercier-theme
+ * @package buttstuff-aletheia
  */
 
 if ( ! function_exists( 'rebeccamercier_setup' ) ) {
@@ -14,7 +14,7 @@ if ( ! function_exists( 'rebeccamercier_setup' ) ) {
 
 		// Make theme available for translation.
 		load_theme_textdomain(
-			'rebecca-mercier-theme',
+			'buttstuff-aletheia',
 			get_template_directory() . '/languages'
 		);
 
@@ -57,21 +57,21 @@ function rebeccamercier_register_block_styles() {
 
 	$block_styles = array(
 		'core/columns'      => array(
-			'columns-reverse' => __( 'Reverse', 'rebecca-mercier-theme' ),
+			'columns-reverse' => __( 'Reverse', 'buttstuff-aletheia' ),
 		),
 		'core/group'        => array(
-			'shadow-light' => __( 'Shadow', 'rebecca-mercier-theme' ),
-			'shadow-solid' => __( 'Solid', 'rebecca-mercier-theme' ),
+			'shadow-light' => __( 'Shadow', 'buttstuff-aletheia' ),
+			'shadow-solid' => __( 'Solid', 'buttstuff-aletheia' ),
 		),
 		'core/list'         => array(
-			'no-disc' => __( 'No Disc', 'rebecca-mercier-theme' ),
+			'no-disc' => __( 'No Disc', 'buttstuff-aletheia' ),
 		),
 		'core/quote'        => array(
-			'shadow-light' => __( 'Shadow', 'rebecca-mercier-theme' ),
-			'shadow-solid' => __( 'Solid', 'rebecca-mercier-theme' ),
+			'shadow-light' => __( 'Shadow', 'buttstuff-aletheia' ),
+			'shadow-solid' => __( 'Solid', 'buttstuff-aletheia' ),
 		),
 		'core/social-links' => array(
-			'outline' => __( 'Outline', 'rebecca-mercier-theme' ),
+			'outline' => __( 'Outline', 'buttstuff-aletheia' ),
 		),
 	);
 
@@ -97,16 +97,16 @@ function rebeccamercier_register_block_pattern_categories() {
 	register_block_pattern_category(
 		'rebeccamercier-page',
 		array(
-			'label'       => __( 'Page', 'rebecca-mercier-theme' ),
-			'description' => __( 'Full page layouts for the site.', 'rebecca-mercier-theme' ),
+			'label'       => __( 'Page', 'buttstuff-aletheia' ),
+			'description' => __( 'Full page layouts for the site.', 'buttstuff-aletheia' ),
 		)
 	);
 
 	register_block_pattern_category(
 		'rebeccamercier-pricing',
 		array(
-			'label'       => __( 'Pricing', 'rebecca-mercier-theme' ),
-			'description' => __( 'Pricing / comparison layouts.', 'rebecca-mercier-theme' ),
+			'label'       => __( 'Pricing', 'buttstuff-aletheia' ),
+			'description' => __( 'Pricing / comparison layouts.', 'buttstuff-aletheia' ),
 		)
 	);
 }

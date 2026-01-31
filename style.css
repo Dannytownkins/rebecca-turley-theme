@@ -261,10 +261,7 @@ body > .wp-site-blocks {
 	margin-top: 0 !important;
 }
 
-body > .wp-site-blocks > header:first-child,
-body > .wp-site-blocks > .site-header:first-child {
-	margin-top: 0 !important;
-}
+
 
 /* Extend header background to browser chrome */
 .site-header::before {

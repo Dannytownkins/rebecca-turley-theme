@@ -1873,3 +1873,7 @@ body > .wp-site-blocks > .site-header:first-child {
 		box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.15) !important;
 	}
 }
+.site-header,
+header.wp-block-template-part {
+    margin-block-start: 0 !important;
+}

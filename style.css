@@ -1,0 +1,1860 @@
+/*
+Theme Name: rebecca-mercier-theme
+Theme URI: https://frostwp.com/
+Author: Dan
+Author URI: https://wpengine.com/
+Description: Custom Frost-based theme for Rebecca Turley.
+Tags: block-patterns, block-styles, custom-colors, custom-logo, custom-menu, editor-style, full-site-editing, one-column, template-editing, threaded-comments, translation-ready, wide-blocks
+Requires at least: 6.7
+Tested up to: 6.7
+Requires PHP: 7.2
+Version: 1.0.46
+License: GNU General Public License v3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
+Text Domain: rebecca-mercier-theme
+*/
+
+/* Design Tokens
+---------------------------------------- */
+
+:root {
+	/* Typography Scale */
+	--font-h1: clamp(2.6rem, 3.4vw, 3.4rem);
+	--font-h2: clamp(2.1rem, 2.6vw, 2.6rem);
+	--font-h3: clamp(1.5rem, 1.9vw, 1.9rem);
+	--font-h4: clamp(1.1rem, 1.3vw, 1.3rem);
+	--font-body: clamp(1rem, 1.05vw, 1.1rem);
+	--font-body-large: clamp(1.1rem, 1.15vw, 1.2rem);
+	--font-small: 0.875rem;
+	--line-height-tight: 1.1;
+	--line-height-normal: 1.5;
+	--line-height-relaxed: 1.8;
+
+	/* Spacing Scale */
+	--space-section-desktop: clamp(60px, 7vw, 80px);
+	--space-section-tablet: clamp(48px, 6vw, 60px);
+	--space-section-mobile: clamp(36px, 5vw, 48px);
+	--space-large: clamp(40px, 5vw, 60px);
+	--space-medium: clamp(24px, 3vw, 40px);
+	--space-small: clamp(16px, 2vw, 24px);
+	--space-xs: clamp(8px, 1vw, 12px);
+
+	/* Color Palette */
+	--color-bg-dark: #1B1512;
+	--color-bg-dark-soft: #2F2623;
+	--color-bg-light: #F5F1EA;
+	--color-bg-cream: #E8DED2;
+	--color-accent: #B07455;
+	--color-accent-soft: #C78D6B;
+	--color-muted: #6E8575;
+	--color-muted-soft: rgba(110, 133, 117, 0.5);
+	--color-text: #4A3F35;
+	--color-text-soft: rgba(74, 63, 53, 0.7);
+
+	/* Border Radius */
+	--radius-large: 40px;
+	--radius-medium: 24px;
+	--radius-small: 18px;
+	--radius-pill: 999px;
+
+	/* Card System */
+	--card-padding: clamp(36px, 4.5vw, 44px);
+	--card-border: 2px solid rgba(176, 116, 85, 0.2);
+	--card-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.12);
+	--card-shadow-hover: 0 20px 48px -16px rgba(0, 0, 0, 0.18);
+
+	/* Content Width */
+	--content-narrow: 640px;
+	--content-medium: 900px;
+	--content-wide: 1200px;
+}
+
+/* Defaults
+---------------------------------------- */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+/* html scroll-behavior moved to header section */
+
+body {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--primary);
+	font-size: var(--font-body);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text);
+	background-color: var(--color-bg-light);
+	background-image:
+		radial-gradient(circle at top left, rgba(199, 141, 107, 0.15), transparent 50%),
+		radial-gradient(circle at center, transparent 40%, rgba(74, 63, 53, 0.03) 100%);
+	position: relative;
+}
+
+body::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	background-image: url('./assets/images/ornate-pattern.svg');
+	background-size: 200px 200px;
+	background-position: center;
+	background-repeat: repeat;
+	opacity: 0.02;
+	pointer-events: none;
+	z-index: -1;
+}
+
+/* Typography Hierarchy */
+h1 {
+	font-size: var(--font-h1);
+	line-height: var(--line-height-tight);
+	margin: 0 0 var(--space-medium) 0;
+}
+
+h2 {
+	font-size: var(--font-h2);
+	line-height: var(--line-height-tight);
+	margin: 0 0 var(--space-small) 0;
+	font-weight: 600;
+}
+
+/* Specific increase in boldness for Rebecca Turley section */
+#about h2 {
+	font-weight: 700;
+}
+
+h3 {
+	font-size: var(--font-h3);
+	line-height: var(--line-height-normal);
+	margin: 0 0 var(--space-small) 0;
+}
+
+h4 {
+	font-size: var(--font-h4);
+	line-height: var(--line-height-normal);
+	margin: 0 0 var(--space-xs) 0;
+}
+
+p {
+	margin: 0 0 var(--space-small) 0;
+}
+
+p:last-child {
+	margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+	p {
+		max-width: 100% !important;
+	}
+}
+
+/* Utility & Section Gradients
+---------------------------------------- */
+
+.gradient-section-1,
+.gradient-section-2,
+.gradient-section-3 {
+	padding: var(--space-section-desktop) var(--space-medium);
+	position: relative;
+}
+
+.gradient-section-1 {
+	background: linear-gradient(180deg, rgba(245, 241, 234, 1) 0%, rgba(217, 195, 173, 0.6) 50%, rgba(232, 222, 210, 0.5) 100%);
+}
+
+.gradient-section-1::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(circle at 20% 30%, rgba(110, 133, 117, 0.15), transparent 50%),
+		radial-gradient(circle at 80% 70%, rgba(176, 116, 85, 0.12), transparent 50%);
+	pointer-events: none;
+}
+
+.gradient-section-2 {
+	background: linear-gradient(180deg, rgba(232, 222, 210, 0.5) 0%, rgba(245, 241, 234, 1) 30%, rgba(217, 195, 173, 0.7) 70%, rgba(232, 222, 210, 0.5) 100%);
+}
+
+.gradient-section-2::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(ellipse at 50% 50%, rgba(110, 133, 117, 0.18), transparent 60%);
+	pointer-events: none;
+}
+
+.gradient-section-3 {
+	background: linear-gradient(180deg, rgba(217, 195, 173, 0.7) 0%, rgba(245, 241, 234, 1) 50%, rgba(232, 222, 210, 0.6) 100%);
+}
+
+.gradient-section-3::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(circle at 70% 40%, rgba(176, 116, 85, 0.15), transparent 55%);
+	pointer-events: none;
+}
+
+.gradient-overlay {
+	position: relative;
+}
+
+.gradient-overlay::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(circle at 30% 40%, rgba(110, 133, 117, 0.2), transparent 60%);
+	pointer-events: none;
+	z-index: 1;
+}
+
+.gradient-overlay::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: url('./assets/images/ornate-pattern.svg');
+	background-size: 180px 180px;
+	background-position: center;
+	background-repeat: repeat;
+	opacity: 0.08;
+	pointer-events: none;
+	z-index: 2;
+}
+
+.gradient-overlay>* {
+	position: relative;
+	z-index: 3;
+}
+
+/* Unified header - single background color */
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	background-color: #E8DED2;
+	background: #E8DED2;
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+	border-bottom: none;
+	transition: background 0.4s ease, box-shadow 0.4s ease;
+	padding: 0 !important;
+	margin: 0 !important;
+	min-height: auto;
+}
+
+/* Kill the lighter beige strip above header */
+html {
+	scroll-behavior: smooth;
+	background: rgba(232, 222, 210, 1); /* Match header color */
+}
+
+body {
+	padding-top: 0 !important;
+	margin-top: 0 !important;
+}
+
+body > .wp-site-blocks {
+	padding-top: 0 !important;
+	margin-top: 0 !important;
+}
+
+body > .wp-site-blocks > header:first-child,
+body > .wp-site-blocks > .site-header:first-child {
+	margin-top: 0 !important;
+}
+
+/* Extend header background to browser chrome */
+.site-header::before {
+	content: '';
+	position: absolute;
+	top: -100px; /* Cover any gap above */
+	left: 0;
+	right: 0;
+	height: 100px;
+	background: rgba(232, 222, 210, 1);
+	z-index: -1;
+}
+
+.site-header .alignwide {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	gap: clamp(20px, 4vw, 60px);
+	padding: 6px 20px;
+}
+
+.site-header .brand-lockup {
+	flex-shrink: 0;
+}
+
+.site-header .brand-lockup img {
+	max-height: 50px;
+	height: auto;
+	width: auto;
+	object-fit: contain;
+}
+
+.site-header .wp-block-navigation {
+	flex-grow: 1;
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.12em;
+}
+
+.site-header[data-scrolled="true"] {
+	background: rgba(232, 222, 210, 0.98);
+	box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.1);
+	position: relative;
+}
+
+
+.site-header .wp-block-navigation__responsive-container.is-menu-open {
+	background: #E8DED2 !important;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: auto;
+	width: 85vw;
+	max-width: 320px;
+	height: 100vh !important;
+	height: -webkit-fill-available;
+	min-height: 100vh !important;
+	overflow-y: auto;
+	transform: translateX(0);
+	transition: transform 0.3s ease-in-out;
+	box-shadow: -5px 0 20px rgba(0, 0, 0, 0.15);
+	z-index: 9999;
+	border: none;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* Backdrop overlay when menu is open */
+.site-header .wp-block-navigation__responsive-container.is-menu-open::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.4);
+	z-index: -1;
+}
+
+/* Menu content styling - MUST fill full height */
+.site-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__responsive-container-content {
+	padding: 80px 40px 40px 40px;
+	background: #E8DED2 !important;
+	min-height: 100vh !important;
+	height: 100vh !important;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	box-sizing: border-box;
+}
+
+/* Override any WordPress default backgrounds */
+.site-header .wp-block-navigation__responsive-container.is-menu-open,
+.site-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__responsive-container-content,
+.site-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__container {
+	background-color: #E8DED2 !important;
+}
+
+.site-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__container {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	flex-grow: 0;
+}
+
+.site-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item {
+	margin: 0;
+	border-bottom: 1px solid rgba(74, 63, 53, 0.12);
+}
+
+.site-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item:last-child {
+	border-bottom: none;
+}
+
+.site-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item a,
+.site-header .wp-block-navigation__responsive-container.is-menu-open a {
+	font-size: 16px;
+	padding: 18px 0;
+	display: block;
+	color: #4A3F35 !important;
+	text-decoration: none;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	font-weight: 500;
+	transition: opacity 0.2s ease;
+}
+
+.site-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item a:hover {
+	opacity: 0.6;
+}
+
+/* Close button styling */
+.site-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__responsive-container-close {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	background: transparent;
+	border: none;
+	color: #4A3F35;
+	padding: 10px;
+	cursor: pointer;
+}
+
+.is-style-glass {
+	background: rgba(255, 255, 255, 0.65);
+	backdrop-filter: blur(18px);
+	-webkit-backdrop-filter: blur(18px);
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	box-shadow: 0 15px 45px -20px rgba(0, 0, 0, 0.25);
+}
+
+.is-style-glass-dark {
+	background: rgba(26, 26, 26, 0.7);
+	backdrop-filter: blur(16px);
+	-webkit-backdrop-filter: blur(16px);
+	color: #fff;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.is-style-zen-gradient {
+	background: var(--wp--preset--gradient--morning-mist);
+}
+
+.is-style-offset-image {
+	margin-top: -60px !important;
+	z-index: 10;
+	position: relative;
+}
+
+.is-style-soft-shadow {
+	box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
+}
+
+.is-style-text-overlay {
+	mix-blend-mode: overlay;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-fade-in {
+	animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.reveal-on-scroll {
+	opacity: 0;
+	transform: translateY(40px);
+	transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal-on-scroll.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.wp-block-button__link {
+	transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.wp-block-button__link:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Make pill-link white in hero, dark on light backgrounds */
+.pill-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 12px;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	color: var(--color-text);
+	opacity: 1;
+}
+
+.pill-link a {
+	color: var(--color-text);
+	text-decoration: none;
+}
+
+/* White pill links only in hero */
+.hero-parallax .pill-link,
+.hero-parallax .pill-link a {
+	color: rgba(255, 255, 255, 0.95);
+}
+
+.pill-link::after {
+	content: '';
+	width: 32px;
+	height: 1px;
+	background: currentColor;
+	opacity: 0.8;
+	transition: width 0.3s ease;
+}
+
+.pill-link:hover::after {
+	width: 48px;
+}
+
+/* Section caption white in hero */
+.hero-parallax .section-caption {
+	color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.section-caption {
+	font-size: 13px;
+	letter-spacing: 0.4em;
+	text-transform: uppercase;
+	color: var(--color-text-soft);
+	margin-bottom: var(--space-medium);
+	max-width: none;
+}
+
+.texture-lines {
+	background-image: url('./assets/images/texture-lines.svg');
+	background-size: 600px 400px;
+	background-position: center;
+	background-repeat: repeat;
+}
+
+.texture-wave {
+	background-image: url('./assets/images/texture-wave.svg');
+	background-size: 800px 600px;
+	background-position: center;
+	background-repeat: repeat;
+}
+
+.texture-ornate {
+	position: relative;
+	overflow: hidden;
+}
+
+.texture-ornate::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: url('./assets/images/ornate-pattern.svg');
+	background-size: 200px 200px;
+	background-position: center;
+	background-repeat: repeat;
+	opacity: 0.3;
+	pointer-events: none;
+	z-index: 0;
+}
+
+/* Ornate Panel (Mercier Therapy Conditions Card)
+---------------------------------------- */
+
+.ornate-panel {
+	position: relative;
+	overflow: visible;
+	border-radius: var(--radius-large);
+	padding: var(--space-large);
+	background:
+		linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 241, 234, 0.92) 50%, rgba(255, 255, 255, 0.95) 100%),
+		url('./assets/images/ornate-pattern.svg');
+	background-size: auto, 140px 140px;
+	background-position: center, center;
+	background-repeat: no-repeat, repeat;
+	background-blend-mode: normal, overlay;
+	box-shadow:
+		0 20px 60px -20px rgba(0, 0, 0, 0.2),
+		0 0 0 1px rgba(176, 116, 85, 0.1) inset,
+		inset 0 2px 0 rgba(255, 255, 255, 0.95),
+		inset 0 -2px 0 rgba(176, 116, 85, 0.2);
+	border: 2px solid rgba(176, 116, 85, 0.3);
+	margin-top: var(--space-small);
+}
+
+/* Top decorative accent */
+.ornate-panel::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 3px;
+	background: linear-gradient(90deg, transparent, rgba(176, 116, 85, 0.4) 20%, rgba(110, 133, 117, 0.4) 50%, rgba(176, 116, 85, 0.4) 80%, transparent);
+	z-index: 2;
+}
+
+.ornate-panel>* {
+	position: relative;
+	z-index: 1;
+}
+
+.ornate-panel::after {
+	content: '';
+	position: absolute;
+	inset: 20px;
+	border: 1.5px solid rgba(110, 133, 117, 0.2);
+	border-radius: calc(var(--radius-large) - 20px);
+	pointer-events: none;
+	z-index: 0;
+	box-shadow: inset 0 0 30px rgba(110, 133, 117, 0.08);
+}
+
+/* Disable parallax and reduce padding */
+.hero-parallax {
+	position: relative;
+	overflow: hidden;
+	min-height: 70vh;
+}
+
+.hero-parallax .wp-block-cover__image-background {
+	object-fit: cover;
+	object-position: center;
+	filter: blur(3px) brightness(0.75);
+}
+
+/* Tighten top padding to show Rebecca section sooner */
+.hero-parallax>.wp-block-group {
+	padding-top: calc(var(--space-medium) * 0.95) !important;
+	padding-bottom: calc(var(--space-medium) * 0.95) !important;
+}
+
+/* Card System - Perfect Symmetry
+---------------------------------------- */
+
+/* Force equal height cards */
+.card-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: var(--space-medium);
+	margin-top: var(--space-medium);
+	align-items: stretch;
+}
+
+.card-grid .card {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
+	min-height: 320px;
+	padding: var(--card-padding);
+	border-radius: var(--radius-small);
+	border: var(--card-border);
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(245, 241, 234, 0.9));
+	box-shadow: var(--card-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+	position: relative;
+	overflow: hidden;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	margin-block: 0 !important;
+}
+
+.card-grid .card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background: linear-gradient(90deg, rgba(176, 116, 85, 0.3), rgba(110, 133, 117, 0.4), rgba(176, 116, 85, 0.3));
+	z-index: 1;
+}
+
+.card-grid .card::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: url('./assets/images/ornate-pattern.svg');
+	background-size: 120px 120px;
+	background-position: bottom right;
+	background-repeat: no-repeat;
+	opacity: 0.05;
+	pointer-events: none;
+	z-index: 0;
+}
+
+.card-grid .card:hover {
+	transform: translateY(-4px);
+	box-shadow: var(--card-shadow-hover), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.card-grid .card>* {
+	position: relative;
+	z-index: 2;
+}
+
+.card h3 {
+	margin: 0 0 var(--space-xs) 0;
+	font-size: 14px;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--color-text-soft);
+	max-width: none;
+	font-weight: 700;
+}
+
+.card p {
+	font-size: var(--font-small);
+	line-height: var(--line-height-normal);
+	margin: 0;
+	max-width: none;
+}
+
+/* Tablet: 2 cards per row */
+@media (max-width: 1024px) {
+	.card-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+/* Mobile: 1 card per row */
+@media (max-width: 600px) {
+	.card-grid {
+		grid-template-columns: 1fr;
+		gap: var(--space-small);
+	}
+
+	.card-grid .card {
+		min-height: auto;
+	}
+}
+
+/* Testimonials Section
+---------------------------------------- */
+
+.testimonials-band {
+	background: radial-gradient(ellipse at top, rgba(110, 133, 117, 0.25), transparent 50%),
+		linear-gradient(160deg, var(--color-bg-dark-soft) 0%, var(--color-bg-dark) 100%);
+	color: var(--color-bg-light);
+	padding: var(--space-section-desktop) var(--space-medium);
+	position: relative;
+	overflow: hidden;
+	/* Prevent horizontal overflow on mobile */
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.testimonials-band * {
+	color: var(--color-bg-light) !important;
+}
+
+.testimonials-band .section-caption {
+	color: rgba(245, 241, 234, 0.7) !important;
+}
+
+.testimonials-band::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: url('./assets/images/texture-wave.svg');
+	background-size: 800px 600px;
+	background-position: center;
+	background-repeat: repeat;
+	opacity: 0.25;
+	mix-blend-mode: screen;
+}
+
+.testimonials-band .wp-block-columns {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: var(--space-medium);
+	margin-top: var(--space-medium);
+	align-items: stretch;
+}
+
+.testimonials-band .testimonial-card {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	min-height: 320px;
+	position: relative;
+	padding: var(--card-padding);
+	background: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	border-radius: var(--radius-medium);
+	box-shadow: 0 40px 60px -45px rgba(0, 0, 0, 0.9);
+	transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.testimonials-band .testimonial-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 50px 70px -50px rgba(0, 0, 0, 1);
+}
+
+.testimonial-card p {
+	font-size: var(--font-small);
+	line-height: var(--line-height-normal);
+	font-style: italic;
+	max-width: none;
+}
+
+.testimonial-card strong {
+	display: inline-block;
+	margin-top: var(--space-small);
+	font-size: 13px;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	font-style: normal;
+	font-weight: 700;
+}
+
+/* Pull Quote (between sections) */
+.pull-quote {
+	padding: var(--space-medium) var(--space-medium);
+	background: linear-gradient(135deg, rgba(27, 21, 18, 0.03), rgba(110, 133, 117, 0.05));
+	border-left: 4px solid var(--color-accent);
+	margin: 0 auto;
+	max-width: var(--content-medium);
+}
+
+.pull-quote p {
+	font-size: var(--font-body-large);
+	line-height: var(--line-height-relaxed);
+	font-style: italic;
+	color: var(--color-text);
+	margin: 0;
+	max-width: none;
+}
+
+.pull-quote cite {
+	display: block;
+	margin-top: var(--space-xs);
+	font-size: var(--font-small);
+	font-style: normal;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--color-text-soft);
+}
+
+@media (max-width: 768px) {
+	.testimonials-band .wp-block-columns {
+		grid-template-columns: 1fr;
+		gap: var(--space-small);
+	}
+
+	.testimonials-band .testimonial-card {
+		min-height: auto;
+	}
+}
+
+/* Make buttons same size */
+.cta-stack {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.cta-stack .wp-block-button {
+	flex: 1 1 auto;
+	min-width: 200px;
+}
+
+.cta-stack .wp-block-button__link {
+	border-radius: 999px;
+	padding: 16px 32px;
+	width: 100%;
+	text-align: center;
+	display: block;
+}
+
+.cta-stack .is-style-outline .wp-block-button__link {
+	border-color: rgba(255, 255, 255, 0.6);
+	color: inherit;
+}
+
+.contact-layout {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: clamp(30px, 4vw, 60px);
+	align-items: stretch;
+}
+
+.contact-card {
+	background: rgba(255, 255, 255, 0.9);
+	border-radius: 32px;
+	padding: clamp(30px, 4vw, 50px);
+	box-shadow: 0 40px 80px -60px rgba(27, 21, 18, 0.9);
+}
+
+.contact-card .contact-meta {
+	display: grid;
+	gap: 10px;
+	margin-top: 20px;
+	font-size: 16px;
+}
+
+.contact-card .contact-meta a {
+	text-decoration: none;
+	color: inherit;
+	border-bottom: 1px solid rgba(27, 21, 18, 0.2);
+}
+
+.contact-form-panel {
+	background: rgba(27, 21, 18, 0.92);
+	color: var(--wp--preset--color--base);
+	border-radius: 32px;
+	padding: clamp(30px, 4vw, 50px);
+	position: relative;
+	overflow: hidden;
+}
+
+.contact-form-panel::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: url('./assets/images/texture-lines.svg');
+	background-size: 600px 400px;
+	background-repeat: repeat;
+	opacity: 0.15;
+	mix-blend-mode: screen;
+}
+
+.contact-form-panel form,
+.contact-form-panel .contact-form {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	gap: 16px;
+}
+
+.contact-form-panel .form-group {
+	margin: 0;
+}
+
+.contact-form-panel input,
+.contact-form-panel textarea {
+	width: 100%;
+	padding: 16px 18px;
+	background: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	color: var(--wp--preset--color--base);
+	border-radius: 12px;
+	font-family: inherit;
+	font-size: 15px;
+}
+
+.contact-form-panel input::placeholder,
+.contact-form-panel textarea::placeholder {
+	color: rgba(245, 241, 234, 0.5);
+}
+
+.contact-form-panel input:focus,
+.contact-form-panel textarea:focus {
+	outline: none;
+	border-color: var(--wp--preset--color--primary);
+	box-shadow: 0 0 0 1px var(--wp--preset--color--primary);
+}
+
+.contact-form-panel input[type='submit'],
+.contact-form-panel button,
+.contact-form-panel .wp-block-button__link {
+	background: var(--wp--preset--color--primary);
+	color: #fff;
+	border: none;
+	border-radius: 999px;
+	padding: 16px 26px;
+	cursor: pointer;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+}
+
+.contact-form-panel input[type='submit']:hover,
+.contact-form-panel button:hover,
+.contact-form-panel .wp-block-button__link:hover {
+	background: var(--wp--preset--color--contrast);
+}
+
+/* Contact Form - Row Layout for First/Last Name */
+.contact-form .form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+
+.contact-form .form-group-half {
+	width: 100%;
+}
+
+@media (max-width: 600px) {
+	.contact-form .form-row {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Form Messages */
+.form-message {
+	padding: 16px 20px;
+	border-radius: 12px;
+	margin-bottom: 20px;
+	font-size: 15px;
+	line-height: 1.5;
+}
+
+.form-success {
+	background: rgba(110, 133, 117, 0.2);
+	border: 1px solid rgba(110, 133, 117, 0.4);
+	color: #E8DED2;
+}
+
+.form-error {
+	background: rgba(176, 116, 85, 0.2);
+	border: 1px solid rgba(176, 116, 85, 0.4);
+	color: #E8DED2;
+}
+
+/* Image Containers - Ready for Photos
+---------------------------------------- */
+
+/* Remove hover effects on images */
+.gradient-frame {
+	position: relative;
+	border-radius: var(--radius-large);
+	/* Professional subtle shadow for depth */
+	box-shadow:
+		0 10px 40px -12px rgba(0, 0, 0, 0.25),
+		0 4px 12px -4px rgba(0, 0, 0, 0.12);
+	overflow: hidden;
+	max-width: 100%;
+}
+
+.gradient-frame img,
+.gradient-frame figure {
+	border-radius: calc(var(--radius-large) - 1px);
+	margin: 0;
+	display: block;
+	width: 100%;
+	height: auto;
+	object-fit: cover;
+}
+
+/* Photo containers with borders, no hover, no inner outline */
+.floating-image {
+	position: relative;
+	border-radius: var(--radius-medium);
+	overflow: hidden;
+	/* Subtle shadow and minimal border stroke */
+	box-shadow:
+		0 8px 24px -8px rgba(0, 0, 0, 0.15),
+		0 2px 8px -2px rgba(0, 0, 0, 0.08);
+	border: 0.5px solid rgba(0, 0, 0, 0.06);
+	max-width: 100%;
+}
+
+.floating-image img {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin: 0;
+	border-radius: var(--radius-medium);
+	object-fit: cover;
+}
+
+/* Hero Section - Subtle blur and darken background for depth */
+.hero-parallax .wp-block-cover__image-background {
+	filter: blur(2px) brightness(1.05);
+}
+
+
+.badge-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.badge-list span {
+	padding: 10px 18px;
+	border-radius: 999px;
+	background: rgba(27, 21, 18, 0.06);
+	font-size: 12px;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--stone);
+}
+
+/* List Grid (for Mercier conditions card)
+---------------------------------------- */
+
+/* Feature Blocks - Mercier Therapy Section */
+.feature-blocks {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-medium);
+	margin-top: var(--space-medium);
+	margin-bottom: var(--space-small);
+}
+
+.feature-block {
+	padding: var(--space-small) 0;
+	padding-left: var(--space-small);
+	border-left: 3px solid var(--color-accent);
+	position: relative;
+}
+
+.feature-block h3 {
+	font-size: 15px;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: var(--color-text);
+	margin-bottom: var(--space-xs);
+	max-width: none;
+}
+
+.feature-block p {
+	margin: 0;
+	max-width: none;
+	color: var(--color-text-soft);
+}
+
+.mercier-intro {
+	margin-bottom: 0;
+}
+
+.mercier-conclusion {
+	border-top: 1px solid rgba(74, 63, 53, 0.12);
+	padding-top: var(--space-small);
+}
+
+/* Image column sticky on desktop */
+@media (min-width: 783px) {
+	.mercier-image-column {
+		position: sticky;
+		top: 100px;
+		align-self: flex-start;
+	}
+}
+
+@media (max-width: 782px) {
+	.feature-blocks {
+		gap: var(--space-small);
+		margin-top: var(--space-small);
+	}
+
+	.feature-block {
+		padding: var(--space-xs) 0;
+		padding-left: var(--space-xs);
+	}
+
+	.feature-block h3 {
+		font-size: 14px;
+	}
+}
+
+.card-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: var(--space-medium);
+	align-items: stretch;
+	margin-top: var(--space-large);
+}
+
+/* Tablet: 2 cards per row */
+@media (max-width: 1024px) {
+	.card-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+/* Mobile: 1 card per row */
+@media (max-width: 600px) {
+	.card-grid {
+		grid-template-columns: 1fr;
+		gap: var(--space-small);
+	}
+
+	.card-grid .card {
+		min-height: auto;
+	}
+}
+
+.list-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: var(--space-medium);
+	align-items: start;
+}
+
+.list-grid>* {
+	max-width: none;
+	margin-top: 0 !important;
+}
+
+.list-grid h4 {
+	font-size: var(--font-h4);
+	letter-spacing: 0.05em;
+	margin-bottom: var(--space-small);
+	margin-top: 0;
+	color: var(--color-text);
+}
+
+.list-grid ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	margin-top: var(--space-small);
+}
+
+.list-grid li {
+	padding: var(--space-xs) 0;
+	font-size: var(--font-body);
+	line-height: var(--line-height-relaxed);
+	border-bottom: 1px solid rgba(27, 21, 18, 0.08);
+	color: var(--color-text);
+	font-weight: 600;
+}
+
+.list-grid li:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+.list-grid p {
+	font-size: var(--font-small);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text);
+	max-width: none;
+}
+
+@media (max-width: 768px) {
+	.list-grid {
+		grid-template-columns: 1fr;
+		gap: var(--space-medium);
+	}
+}
+
+/* CTA Panel
+---------------------------------------- */
+
+.cta-panel {
+	border-radius: var(--radius-large);
+	padding: var(--space-large);
+	background: linear-gradient(135deg, var(--color-bg-dark) 0%, var(--color-bg-dark-soft) 100%);
+	color: var(--color-bg-light);
+	position: relative;
+	overflow: hidden;
+	max-width: var(--content-medium);
+	margin: 0 auto;
+}
+
+.cta-panel::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: url('./assets/images/texture-lines.svg');
+	background-size: 600px 400px;
+	background-repeat: repeat;
+	opacity: 0.2;
+	mix-blend-mode: screen;
+}
+
+.cta-panel>* {
+	position: relative;
+	z-index: 1;
+}
+
+.cta-panel h2,
+.cta-panel p {
+	max-width: none;
+	text-align: center;
+}
+
+.header-cta .wp-block-button__link {
+	border-radius: 999px;
+	padding: 12px 28px;
+}
+
+.brand-lockup {
+	position: relative;
+	min-height: 48px;
+}
+
+.brand-lockup .wp-block-group {
+	position: relative;
+}
+
+.logo-dark,
+.logo-light {
+	margin: 0;
+	transition: opacity 0.3s ease;
+}
+
+.logo-light {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.site-header[data-scrolled="true"] .logo-dark {
+	opacity: 0;
+}
+
+.site-header[data-scrolled="true"] .logo-light {
+	opacity: 1;
+}
+
+.footer-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 20px;
+	align-items: start;
+}
+
+/* Force all footer text to be white/cream */
+.footer-grid,
+.footer-grid p,
+.footer-grid h4,
+.footer-grid strong,
+.footer-grid a {
+	color: #F5F1EA !important;
+}
+
+.footer-grid a {
+	text-decoration: none;
+	border-bottom: 1px solid transparent;
+}
+
+.footer-grid a:hover {
+	border-bottom-color: currentColor;
+}
+
+.is-style-hidden-mobile {
+	display: none !important;
+}
+
+@media (min-width: 600px) {
+	.is-style-hidden-mobile {
+		display: block !important;
+	}
+}
+
+/* Mobile & Tablet Responsive
+---------------------------------------- */
+
+/* Tablet adjustments */
+@media (max-width: 1024px) {
+
+	.gradient-section-1,
+	.gradient-section-2,
+	.gradient-section-3 {
+		padding: var(--space-section-tablet) var(--space-small);
+	}
+
+	.hero-parallax {
+		min-height: 58vh !important;
+	}
+}
+
+/* Mobile adjustments */
+@media (max-width: 782px) {
+
+	.gradient-section-1,
+	.gradient-section-2,
+	.gradient-section-3 {
+		padding: var(--space-section-mobile) var(--space-small);
+	}
+
+	/* Hero section - reduce padding on mobile */
+	.hero-parallax {
+		min-height: 60vh !important;
+	}
+
+	.hero-parallax .wp-block-cover__inner-container {
+		padding: var(--space-small) !important;
+	}
+
+	.hero-parallax .wp-block-group {
+		padding-top: var(--space-small) !important;
+		padding-bottom: var(--space-small) !important;
+	}
+
+	/* Make hamburger menu button cleaner */
+	.site-header .wp-block-navigation__responsive-container-open {
+		width: auto;
+		height: 36px;
+		padding: 6px 14px;
+		background: transparent;
+		border: 1px solid rgba(74, 63, 53, 0.2);
+		border-radius: 999px;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+
+	.site-header .wp-block-navigation__responsive-container-open::after {
+		content: 'MENU';
+		color: var(--color-text);
+	}
+
+	.site-header .wp-block-navigation__responsive-container-open svg {
+		width: 16px;
+		height: 16px;
+	}
+
+	/* Ornate panel */
+	.ornate-panel {
+		padding: var(--space-medium);
+		border-radius: var(--radius-medium);
+	}
+
+	.ornate-panel::after {
+		inset: 12px;
+		border-radius: calc(var(--radius-medium) - 12px);
+	}
+
+	/* Testimonials */
+	.testimonials-band {
+		padding: var(--space-section-mobile) var(--space-small);
+	}
+
+	.testimonial-card {
+		padding: var(--space-medium);
+	}
+
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 1000;
+		padding: 0 !important;
+		border-bottom: none;
+		background: #E8DED2;
+		max-height: 52px;
+	}
+
+	.site-header .alignwide {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		gap: 12px;
+		padding: 6px 16px;
+	}
+
+	.site-header .brand-lockup {
+		min-height: 24px;
+		display: flex;
+		align-items: center;
+	}
+
+	.site-header .brand-lockup img {
+		max-height: 42px;
+		height: auto;
+		width: auto;
+		object-fit: contain;
+	}
+
+	.site-header .wp-block-navigation {
+		font-size: 12px;
+	}
+
+	/* Button stack */
+	.cta-stack {
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.cta-stack .wp-block-button {
+		width: 100%;
+	}
+
+	.cta-stack .wp-block-button__link {
+		width: 100%;
+		text-align: center;
+	}
+
+	/* Contact layout */
+	.contact-layout {
+		grid-template-columns: 1fr;
+		gap: var(--space-medium);
+	}
+
+	/* Image frames */
+	.gradient-frame {
+		border-radius: var(--radius-medium);
+		padding: 1px;
+	}
+
+	.gradient-frame img {
+		border-radius: calc(var(--radius-medium) - 1px);
+	}
+
+	.floating-image {
+		border-radius: var(--radius-small);
+	}
+
+	/* Pull quote */
+	.pull-quote {
+		padding: var(--space-small);
+	}
+
+	/* CTA Panel */
+	.cta-panel {
+		padding: var(--space-medium);
+		border-radius: var(--radius-medium);
+	}
+}
+
+@media (max-width: 600px) {
+
+	/* Extra small mobile adjustments */
+	.hero-parallax {
+		min-height: 62vh !important;
+	}
+
+	.section-caption {
+		font-size: 11px;
+		letter-spacing: 0.3em;
+	}
+
+	.ornate-panel {
+		padding: var(--space-small);
+	}
+}
+
+/* ==========================================================================
+   MOBILE FIXES - Added by Claude (Task List Implementation)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+	/* MOBILE FIX: Task 1 - Global Mobile Spacing */
+	/* Ensures breathing room on all main content containers */
+	body .gradient-section-1,
+	body .gradient-section-2,
+	body .gradient-section-3,
+	body .testimonials-band,
+	body .ornate-panel,
+	body .cta-panel {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+	.wp-block-group.alignwide,
+	.wp-block-columns.alignwide {
+		padding-left: 5%;
+		padding-right: 5%;
+	}
+
+	/* MOBILE FIX: Task 2A - Hero Section Contrast */
+	/* Darken the existing Cover block overlay instead of adding new pseudo-element */
+	.hero-parallax .wp-block-cover__background {
+		background: linear-gradient(
+			180deg,
+			rgba(27, 21, 18, 0.65) 0%,
+			rgba(27, 21, 18, 0.55) 50%,
+			rgba(27, 21, 18, 0.7) 100%
+		) !important;
+		opacity: 1 !important;
+	}
+
+	/* MOBILE FIX: Task 2B - Hero Text Sizing - COMPACT */
+	/* Force smaller headline and tighter spacing */
+	.hero-parallax {
+		min-height: auto !important;
+		height: auto !important;
+	}
+
+	.hero-parallax h1,
+	.hero-parallax h1.has-text-color {
+		font-size: 22px !important;
+		line-height: 1.25 !important;
+		margin-bottom: 12px !important;
+	}
+
+	.hero-parallax p {
+		font-size: 14px !important;
+		line-height: 1.5 !important;
+		margin-bottom: 8px !important;
+	}
+
+	.hero-parallax .section-caption {
+		font-size: 10px !important;
+		letter-spacing: 0.2em !important;
+		margin-bottom: 12px !important;
+	}
+
+	.hero-parallax .wp-block-cover__inner-container {
+		padding: 20px 16px !important;
+		min-height: auto !important;
+	}
+
+	.hero-parallax .wp-block-group {
+		padding: 16px 0 !important;
+	}
+
+	/* Remove vertical centering - content starts near top */
+	.hero-parallax .wp-block-cover__inner-container {
+		display: flex !important;
+		align-items: flex-start !important;
+		justify-content: flex-start !important;
+	}
+
+	/* Hide the second column (portrait image) on mobile hero */
+	.hero-parallax .wp-block-columns .wp-block-column:last-child {
+		display: none !important;
+	}
+
+	/* Make hero column full width */
+	.hero-parallax .wp-block-columns {
+		gap: 0 !important;
+	}
+
+	.hero-parallax .wp-block-columns .wp-block-column:first-child {
+		flex-basis: 100% !important;
+		width: 100% !important;
+	}
+
+	/* Compact CTA buttons */
+	.hero-parallax .cta-stack {
+		gap: 8px !important;
+		margin-top: 16px !important;
+	}
+
+	.hero-parallax .cta-stack .wp-block-button__link {
+		padding: 12px 20px !important;
+		font-size: 12px !important;
+	}
+
+	/* Compact pill link */
+	.hero-parallax .pill-link {
+		margin-top: 12px !important;
+		margin-bottom: 0 !important;
+		font-size: 10px !important;
+	}
+
+	/* MOBILE FIX: Task 3 - Bio Section Reordering */
+	/* Photo appears above text on mobile */
+	#about .wp-block-columns {
+		display: flex !important;
+		flex-direction: column-reverse !important;
+		gap: var(--space-small) !important;
+	}
+
+	#about .wp-block-columns .wp-block-column {
+		flex-basis: 100% !important;
+		width: 100% !important;
+		margin: 0 !important;
+	}
+
+	/* MOBILE FIX: Mercier Therapy section text alignment */
+	#mercier-therapy p,
+	#mercier-therapy .wp-block-column p {
+		padding-left: 0 !important;
+		margin-left: 0 !important;
+		text-align: left !important;
+	}
+
+	#mercier-therapy .wp-block-columns .wp-block-column {
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+
+	/* Force all content in mercier-therapy to align left */
+	#mercier-therapy .wp-block-group,
+	#mercier-therapy .wp-block-columns,
+	#mercier-therapy .wp-block-column {
+		text-align: left !important;
+		align-items: flex-start !important;
+	}
+
+	#mercier-therapy .alignwide {
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+	}
+
+	#mercier-therapy .wp-block-group.reveal-on-scroll > .wp-block-columns {
+		padding-left: 0 !important;
+	}
+
+	#mercier-therapy .wp-block-column p[style*="font-size"] {
+		margin-left: 0 !important;
+		padding-left: 0 !important;
+		max-width: 100% !important;
+	}
+
+	/* MOBILE FIX: Task 4 - Practice Pillars Stacked Cards */
+	/* Cards stack vertically on mobile */
+	.card-grid {
+		display: grid !important;
+		grid-template-columns: 1fr !important;
+		gap: var(--space-small);
+	}
+
+	.card-grid .card {
+		min-height: auto;
+	}
+
+	/* MOBILE FIX: Task 6 - Portrait Image Sizing */
+	/* Reduce large portrait images to prevent scroll fatigue */
+	#about .wp-block-column:has(figure) figure,
+	#about .wp-block-column:has(.floating-image) .floating-image,
+	#about .wp-block-column:has(.gradient-frame) .gradient-frame {
+		max-width: 260px !important;
+		width: 70% !important;
+		margin-left: auto !important;
+		margin-right: auto !important;
+		margin-bottom: var(--space-small) !important;
+		border-radius: var(--radius-medium);
+		display: block !important;
+	}
+
+	#about figure img,
+	#about .floating-image img,
+	#about .gradient-frame img {
+		width: 100% !important;
+		height: auto !important;
+		max-height: none !important;
+		border-radius: var(--radius-medium);
+		object-fit: cover;
+	}
+
+	/* Center the column containing the image */
+	#about .wp-block-columns .wp-block-column:has(figure),
+	#about .wp-block-columns .wp-block-column:has(.floating-image),
+	#about .wp-block-columns .wp-block-column:has(.gradient-frame) {
+		display: flex !important;
+		justify-content: center !important;
+		padding-top: 0;
+		margin-bottom: 0 !important;
+	}
+
+	#mercier-therapy .wp-block-column:has(figure) figure,
+	#mercier-therapy .wp-block-column:has(.floating-image) .floating-image,
+	#mercier-therapy .wp-block-column:has(.gradient-frame) .gradient-frame {
+		max-width: 260px !important;
+		width: 70% !important;
+		margin-left: auto !important;
+		margin-right: auto !important;
+		margin-bottom: var(--space-small) !important;
+		border-radius: var(--radius-medium);
+		display: block !important;
+	}
+
+	#mercier-therapy figure img,
+	#mercier-therapy .floating-image img,
+	#mercier-therapy .gradient-frame img {
+		width: 100% !important;
+		height: auto !important;
+		max-height: none !important;
+		border-radius: var(--radius-medium);
+		object-fit: cover;
+	}
+
+	#mercier-therapy .wp-block-columns .wp-block-column:has(figure),
+	#mercier-therapy .wp-block-columns .wp-block-column:has(.floating-image),
+	#mercier-therapy .wp-block-columns .wp-block-column:has(.gradient-frame) {
+		display: flex !important;
+		justify-content: center !important;
+		margin-bottom: 0 !important;
+	}
+
+	/* MOBILE FIX: Task 5 - Button Touch Targets */
+	/* Ensures 44px minimum for accessibility */
+	.wp-block-button__link,
+	.cta-stack .wp-block-button__link,
+	.hero-parallax .wp-block-button__link,
+	.cta-panel .wp-block-button__link {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 14px 28px;
+	}
+
+	.cta-stack {
+		gap: 12px;
+	}
+
+}
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce) {
+
+	.wp-block-button__link,
+	.pill-link,
+	.testimonial-card,
+	.site-header,
+	.card-grid .card {
+		transition: none;
+	}
+
+	.testimonial-card:hover,
+	.card-grid .card:hover {
+		transform: none;
+	}
+}
+
+/* Fix Practice Pillars and Mercier Therapy sections - force left alignment */
+.gradient-section-2 .wp-block-group.alignwide>p,
+.gradient-section-2 .wp-block-group.alignwide>h2,
+#mercier-therapy .wp-block-group.alignwide>p,
+#mercier-therapy .wp-block-group.alignwide>h2 {
+	text-align: left !important;
+	margin-left: 0 !important;
+	max-width: 100%;
+}
+
+#mercier-therapy .wp-block-columns .wp-block-column p {
+	text-align: left !important;
+}
+
+/* About section - align image with text baseline on desktop */
+@media (min-width: 783px) {
+	#about .wp-block-columns {
+		align-items: flex-end;
+	}
+
+	/* Mercier text section - constrain image to match text height */
+	#mercier-therapy .wp-block-group>.wp-block-columns:has(.floating-image) {
+		display: grid !important;
+		grid-template-columns: 55fr 45fr;
+		gap: var(--wp--style--block-gap, 2em);
+		align-items: start;
+	}
+
+	#mercier-therapy .wp-block-group>.wp-block-columns:has(.floating-image) .wp-block-column {
+		min-height: 0;
+	}
+
+	/* Image column - align with text */
+	#mercier-therapy .wp-block-group>.wp-block-columns:has(.floating-image) .wp-block-column:has(figure) {
+		display: flex;
+		align-items: flex-start;
+	}
+
+	/* Image wrapper */
+	#mercier-therapy .wp-block-group>.wp-block-columns:has(.floating-image) .floating-image {
+		width: 100%;
+		display: block;
+		overflow: hidden;
+		border-radius: var(--radius-medium);
+		box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.12);
+	}
+
+	/* Image displays naturally */
+	#mercier-therapy .wp-block-group>.wp-block-columns:has(.floating-image) .floating-image img {
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+		border-radius: var(--radius-medium);
+	}
+}

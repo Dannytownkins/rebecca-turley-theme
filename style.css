@@ -730,7 +730,7 @@ body > .wp-site-blocks > .site-header:first-child {
 	color: var(--color-text-soft);
 	max-width: none;
 	font-weight: 700;
-	text-align: center;
+	text-align: left;
 }
 
 .card p {
@@ -738,7 +738,7 @@ body > .wp-site-blocks > .site-header:first-child {
 	line-height: var(--line-height-normal);
 	margin: 0;
 	max-width: none;
-	text-align: center;
+	text-align: left;
 }
 
 /* Tablet: 2 cards per row */

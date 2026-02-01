@@ -32,7 +32,12 @@ main.wp-block-group,
 .hero-parallax,
 .wp-block-cover.hero-parallax {
 	margin-block-start: 0 !important;
-	margin-top: 0 !important;
+	margin-top: -1px !important;
+}
+
+/* Nuclear option: make wp-site-blocks background match hero */
+.wp-site-blocks {
+	background-color: var(--color-bg-dark) !important;
 }
 
 :root {

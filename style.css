@@ -1897,4 +1897,14 @@ body > .wp-site-blocks > .site-header:first-child {
 		border-radius: var(--radius-small) !important;
 		box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.15) !important;
 	}
+
+	/* Force left align on card text for mobile */
+	.card h3,
+	.card p,
+	.card-grid .card h3,
+	.card-grid .card p,
+	.card h3.wp-block-heading,
+	.wp-block-group.card h3 {
+		text-align: left !important;
+	}
 }

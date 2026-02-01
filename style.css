@@ -35,8 +35,9 @@ main.wp-block-group,
 	margin-top: -1px !important;
 }
 
-/* Nuclear option: make wp-site-blocks background match hero */
+/* Nuclear option: kill the padding-top causing cream gap */
 .wp-site-blocks {
+	padding-top: 0 !important;
 	background-color: var(--color-bg-dark) !important;
 }
 
